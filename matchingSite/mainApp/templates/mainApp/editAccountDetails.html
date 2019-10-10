@@ -1,0 +1,111 @@
+{% extends "mainApp/base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'mainApp/editAccount.css' %}" enctype='multipart/form-data'>
+
+<div class="container jumbotron">
+  <div class="panel">
+    <div class="text-danger">{{ Error }}</div>
+    <br>
+    <form method='post' action="{% url 'editAccountDetails' %}" enctype="multipart/form-data" id='edit'>
+      {% csrf_token %}
+      <h2 class="form-heading text-important">Edit Account Information</h2>
+      <br>
+      <div class ="form-group">
+        <h6 class="text-muted">First name:<h6>
+          <input type="text" class = "form-control" id="firstnameInput" placeholder="First Name" name="first_name"  value={{first_name}} required>
+        </div>
+        <div class ="form-group">
+          <h6 class="text-muted">Last name:<h6>
+            <input type="text" class = "form-control" id="lastnameInput" placeholder="Last Name" name="last_name" value={{last_name}} required>
+          </div>
+          <div class ="form-group">
+            <h6 class="text-muted">Email address:<h6>
+              <input type="email" class = "form-control" id="emailInput" placeholder="Email" name="email" value={{email}} required>
+            </div>
+            <div class ="form-group">
+              <h6 class="text-muted">Date of birth:<h6>
+                <input type="date" class = "form-control" id="dobInput" placeholder="Date of Birth" name="dob" value="{{dob|date:"Y-m-d" }}"required>
+              </div>
+              <div class="form-group">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+                  </div>
+                  <select class="custom-select" id="genderInput" name = "gender">
+                    <option value="Male" {% if gender == 'Male' %}selected="selected"{% endif %}>Male</option>
+                    <option value="Female" {% if gender == 'Female' %}selected="selected"{% endif %}>Female</option>
+                    <option value="Other" {% if gender == 'Other' %}selected="selected"{% endif %}>Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <h5 class="text-muted">Enter Password</h5>
+                <input type="password" class="form-control" id="passwordInput" placeholder="Password" name="password" required>
+              </div>
+              <div>
+                <button type="submit" class="btn btn-primary">Submit Changes</button>
+              </div>
+            </form>
+            <br>
+            <div id = "error" class="text-danger"></div>
+          </div>
+          <br>
+        </div>
+
+        <script type="text/javascript">
+          $(document).ready(function(){
+            // gets the current date and sets it to the max for the date of birth inpput (so the user cannot enter a birth date after today)
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1;
+            var yyyy = today.getFullYear();
+            $("#dobInput").attr("max",yyyy + "-" + mm + "-" + dd);
+
+
+            // success function of the ajax request, redirects to the homepage
+            function handleEdit(response){
+              if (response.message == 'Success') {
+                window.location = '/mainApp/homePage/'
+              }
+              else
+              $('#error').text(response.message)
+            }
+
+            function printError(response){
+              console.log(response)
+            }
+
+
+            // ajax request to submit the edit account form
+            $('#edit').submit(function(e){
+              // gets the values from the inputs
+              e.preventDefault();
+              var password = $('#passwordInput').val();
+              var fName = $('#firstnameInput').val();
+              var lName = $('#lastnameInput').val();
+              var email = $('#emailInput').val();
+              var dob = $('#dobInput').val();
+              var gender = $('#genderInput').val();
+              var csrf = $('input[name=csrfmiddlewaretoken]').val()
+              // post request to change the users UserProfile object
+              $.ajax({
+                url: '/mainApp/editAccountSubmit/',
+                type: 'post',
+                data: {"password": password,
+                "first_name": fName,
+                "last_name": lName,
+                "email": email,
+                "dob": dob,
+                "gender": gender,
+                "csrfmiddlewaretoken": csrf
+              },
+              success: handleEdit,
+              error: printError,
+            })
+          });
+        });
+
+      </script>
+      {% endblock %}

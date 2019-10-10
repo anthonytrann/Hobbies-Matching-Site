@@ -1,0 +1,65 @@
+{% extends "mainApp/base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'mainApp/addHobbies.css' %}">
+<div class="main">
+  <div class="container">
+    <form class="addHobbies" action="{% url 'addHobbiesSubmit' %}" method="post">
+      {% csrf_token %}
+      <br>
+      {% if hobbyList %}
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <div class="d-inline">
+          <h4 class="d-inline-block float-left">Add Hobbies</h4>
+            <button type="submit" class="btn btn-primary d-inline-block float-right">Update Hobbies</button>
+            </div>
+          <div class="card card-style1">
+            <div class="card-header text-success ">Select hobbies to add</div>
+            <div class="my-hobbies">
+                  <ul class="list-group list-group-flush">
+            {% for hobby in hobbyList %}
+            <li class="list-group-item">
+                {{hobby}}
+                <label class="checkbox">
+                  <input type="checkbox" name="hobbies" value="{{ hobby }}"/>
+                  <span class="primary"></span>
+                </label>
+              </li>
+                  {% endfor %}
+            </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% if currentHobbyList %}
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <h4 class="current-hobbies">Your Current Hobbies</h4>
+          <div class="card card-style2">
+            <div class="card-header text-danger">Select hobbies to remove</div>
+              <div class="my-hobbies">
+                    <ul class="list-group list-group-flush">
+            {% for hobby in currentHobbyList %}
+              <li class="list-group-item">
+                {{hobby}}
+                <label class="checkbox">
+                  <input type="checkbox" name="hobbiesToRemove" value="{{ hobby }}"/>
+                  <span class="danger"></span>
+                </label>
+              </li>
+              {% endfor %}
+            </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      <div class="col-md-6 offset-md-3">
+      <button type="submit" class="btn btn-primary float-right">Update Hobbies</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

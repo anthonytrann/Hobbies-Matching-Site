@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'mainApp/login.css' %}">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,900" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="container jumbotron">
+    <div class="panel">
+      <img src="/media/images/LetsLinkBorder.png" class="logo">
+      <br>
+      <form id="login">
+        {% csrf_token %}
+        <br>
+        <h5 class="text-muted">Enter your username and passsword</h5>
+        <div class ="form-group">
+          <input type="text" class = "form-control" id="usernameInput" placeholder="username" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" id="passwordInput" placeholder="Password" required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <br><br>
+        <span class="text-muted">
+          No Account?
+        </span>
+        <br>
+        <a href="{% url 'createAccount' %}"><button type="button" class="btn btn-primary">Sign up</button></a>
+
+      </form>
+    </div>
+
+    <br>
+    <div id = "error" class="text-danger"></div>
+  </div>
+  <script type="text/javascript">
+  //success function of the ajax request, redirects to the homepage
+  function handleLogin(response){
+    if (response.message == 'Success')
+    window.location = '/mainApp/homePage/'
+    else
+    $('#error').text(response.message)
+  }
+
+  function printError(response){
+    console.log(response)
+    $('#error').html(response)
+  }
+
+  //when login form submitted, ajax request to check the username and password
+  $('#login').submit(function(e){
+    e.preventDefault();
+    var username = $('#usernameInput').val().trim();
+    var password = $('#passwordInput').val();
+    var csrf = $('input[name=csrfmiddlewaretoken]').val()
+    // ajax request to post the like of reject data to the UserProfile objects (the user and their user UserProfiles)
+    $.ajax({
+      url: '/mainApp/login/',
+      type: 'post',
+      data: {'csrfmiddlewaretoken': csrf, "username": username, "password": password},
+      success: handleLogin,
+      error: printError,
+    });
+  });
+  </script>
+</body>
+</html>

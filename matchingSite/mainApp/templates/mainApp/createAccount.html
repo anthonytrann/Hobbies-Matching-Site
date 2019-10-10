@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'mainApp/login.css' %}" enctype='multipart/form-data'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="container jumbotron">
+    <div class="panel">
+      <a href="{% url 'index' %}"><img src="/media/images/LetsLinkBorder.png" class="logo"></a>
+      <div class="text-danger">{{ Error }}</div>
+      <br>
+      <form method='post' action="{% url 'createAccountSubmit' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2 class="form-heading text-important">Create Account</h2>
+        <br>
+        <h5 class="text-muted">Enter your information</h5>
+        <div class ="form-group">
+          <input type="text" class = "form-control" id="usernameInput" placeholder="Username" name="username" required>
+        </div>
+        <div class ="form-group">
+          <input type="text" class = "form-control" id="firstnameInput" placeholder="First Name" name="first_name" required>
+        </div>
+        <div class ="form-group">
+          <input type="text" class = "form-control" id="lastnameInput" placeholder="Last Name" name="last_name" required>
+        </div>
+        <div class ="form-group">
+          <input type="email" class = "form-control" id="emailInput" placeholder="Email" name="email" required>
+        </div>
+        <div class ="form-group">
+          <input type="date" class = "form-control" id="dobInput" placeholder="Date of Birth" name="dob" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" id="passwordInput" placeholder="Password" name="password" required>
+        </div>
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Gender</label>
+            </div>
+            <select class="custom-select" id="genderInput" name = "gender">
+              <option value="Male" selected>Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="id_image">Image:</label>
+          <input type="file" name="imageInput" id="id_image" accept="image/*">
+        </div>
+        <br>
+        <div class="d-inline">
+          <a href="{% url 'index' %}"><button type="button" class="btn btn-danger  create-account-buttons">Cancel</button></a>
+          <button type="submit" class="btn btn-primary create-account-buttons">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+  // gets the current date and sets it to the max for the date of birth inpput (so the user cannot enter a birth date after today)
+ $(document).ready(function() {
+   var today = new Date();
+   var dd = today.getDate();
+   var mm = today.getMonth()+1; //January is 0!
+   var yyyy = today.getFullYear();
+   $("#dobInput").attr("max",yyyy + "-" + mm + "-" + dd);
+ });
+ </script>
+</body>
+</html>

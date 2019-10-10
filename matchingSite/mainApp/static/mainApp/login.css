@@ -1,0 +1,20 @@
+.jumbotron{
+    margin-top: 100px;
+      width: 500px !important;
+    background-color: #6f42c1
+}
+
+.btn{
+  width: 435px;
+}
+
+.logo{
+  width: 400px;
+  height: 120px;
+  margin-top: -40px;
+  margin-left: 20px;
+}
+
+.create-account-buttons{
+  width: 215px;
+}

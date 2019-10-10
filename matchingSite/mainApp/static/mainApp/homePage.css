@@ -1,0 +1,237 @@
+body{
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.subheader{
+  color:#2f0291;
+  font-weight: 900;
+}
+
+#profileImage{
+  height: 200px;
+  width: 200px;
+}
+
+.subheader{
+  color:#2f0291;
+  font-weight: 900;
+}
+
+
+#editButton{
+  margin-top: 20px;
+  color: #fff;
+  background-color: #395d90;
+  border-color: #365786;
+  width: 136px;
+}
+
+#editIcon{
+    background-color: rgba(0,0,0,.2);
+    display: inline-block;
+    width: 2.0625rem;
+    margin: -.375rem -.75rem;
+    line-height: 2.0625rem;
+    text-align: center;
+    height: 30px;
+    margin-right: 5px;
+}
+
+#tabs{
+  margin-top: 1px;
+}
+
+#matchesButton{
+background-color: #6f42c1;
+width: 230px;
+color: #fff;
+}
+
+#searchButton{
+  background-color: #6f42c1;
+  width: 230px;
+color: #fff;
+}
+
+#likesButton{
+  background-color: #6f42c1;
+  width: 230px;
+  color: #fff;
+}
+
+.fa-heart{
+  color: 	#DB7093;
+}
+
+.matchList{
+  margin-top: 50px;
+}
+
+#matches{
+  color: #9f191f;
+  margin-left: 45px;
+}
+
+#searches{
+  color: #588500;
+  margin-left: 185px;
+}
+
+#likes{
+  color: #0170ba;
+  margin-left: 330px;
+}
+
+.listImage{
+  height: 100px;
+  width:100px;
+}
+
+.navbar {
+    background-color: #6f42c1;
+    height: 60px;
+}
+
+.logo{
+  width: 200px;
+  height: 60px;
+  color: white;
+}
+
+.profile-card{
+  background-color: #efefef
+}
+
+.mini-image{
+  height: 165px !important;
+  width: 190px !important;
+}
+
+.ask-icon-list{
+  width: 90px;
+}
+
+.ask-icon-like{
+  margin-left: 8px;
+}
+
+.ask-icon-reject{
+  margin-left: 10px;
+}
+
+#ask-like{
+  margin-left: 8px;
+}
+
+.hobbies{
+  margin-right: 70px;
+  margin-top: 10px;
+}
+
+
+.searchesForm{
+  height: 500px;
+  overflow-y: auto;
+}
+
+.searchesForm::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.searchesForm::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.searchesForm::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #6f42c1;
+}
+
+.matches-reject{
+  height: 165px;
+}
+
+.matches-icon-reject{
+  margin-top: 40px;
+}
+
+#filter-text{
+  margin-right: 50px;
+}
+
+.edit-image{
+  transform: translate(-100%, -100%);
+  top: 100px;
+}
+
+.ask-buttons{
+  cursor: pointer;
+}
+
+.profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -67px;
+    width: 200px;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+}
+.profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #6f42c1;
+  width: 57px;
+  height: 57px;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.likes-you{
+  margin-left:150px;
+  margin-top: -140px;
+}
+
+.card-box{
+  height: 167px;
+}
+
+.option-buttons{
+   white-space: nowrap;
+}
+
+.filterBar{
+  margin-top: -60px;
+  background-color: #eeeeee;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.border-rounded{
+  border-radius: 2rem !important;
+}

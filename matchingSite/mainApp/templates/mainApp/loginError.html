@@ -1,0 +1,19 @@
+<h4 style="font-family: Arial;">You are not logged in, redirecting in: <span id="countdown"></span></h4>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+    // if the user tries to access a page which requires log in when they are not logged in, countsdwon then redirects to the log in page
+  var seconds = 3;
+  $( document ).ready(function() {
+    var seconds = 3;
+    function countdown(){
+      setTimeout(countdown, 1000);
+      $("#countdown").html(seconds)
+      seconds--;
+      if(seconds < 0){
+        window.location = '/mainApp/loginError'
+        seconds = 0
+      }
+    }
+    countdown()
+  });
+</script>

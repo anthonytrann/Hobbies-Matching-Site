@@ -1,0 +1,160 @@
+{% extends "mainApp/base.html" %}
+{% block content %}
+
+<!-- Page Content -->
+<div class="container border mt-4 border-rounded shadow-lg">
+  <div class="row ">
+    <div class="col-md-3 img mr-auto ml-auto ">
+      <br>
+      <h3>{{ first_name }}</h3>
+      {% if image %}
+      <div class="profile-img">
+        <span id="profile-image"><img class="border border-dark" id="profileImage" src="{{image.url}}"/></span>
+        <div class="file btn btn-lg btn-primary">
+          Change Photo
+          <form method='post'id="imageForm" action="{% url 'editPhoto' %}"enctype="multipart/form-data">
+            {% csrf_token %}
+          <input type="file" name="imageInput" id="edit-photo-image"/>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+      <div>
+      </div>
+      <br>
+      <div>
+        <a href="{% url 'addHobbies' %}"><button type="button" id="hobbiesButton" class="btn btn-brand">
+          <span class="fas fa-plus"></span>
+          Add Hobbies</button></a>
+        </div>
+        <a href="{% url 'openChats' %}"><button type="button" id="editButton" class="btn btn-brand">
+       <span class="fas fa-comments"></span> Open chats
+     </button></a>
+      </div>
+      <div class="col-sm-8 ">
+
+        <div class="col-lg d-inline ">
+          <div><h6 class="text-info display-4 d-inline-block">{{button|title}}</h6><h6 class="text-muted d-inline-block ml-4">{{description}}</h6></div>
+          <div id="tabs">
+            <a href="{% url 'matches' %}"<button class="btn" id="matchesButton"><span class="fas fa-link"></span> Links</button></a>
+            <a href="{% url 'searches' %}"<button class="btn" id="searchButton"><span class="fas fa-question"></span> Searches</button></a>
+            <a href="{% url 'likes' %}"<button class="btn" id="likesButton"><span class="fa fa-plus-circle"></span> Pending links</button></a>
+          </div>
+          <br>
+          <div class="row mt-5 mr-auto">
+            <div class=" col-lg">
+              <div class="container-fluid bg-light filterBar">
+                <div class="row align-items-center justify-content-center filterBar">
+                  <span id="filter-text">Filter by:</span>Age
+                  <div class="col-md-2 pt-3">
+                    <div class="form-group ">
+                      <select id="inputAge" class="form-control">
+                        <option selected>All</option>
+                        <option>under 18</option>
+                        <option>18-30</option>
+                        <option>31-40</option>
+                        <option>41-50</option>
+                        <option>over 50</option>
+                      </select>
+                    </div>
+                  </div>
+                  Gender
+                  <div class="col-md-2 pt-3">
+                    <div class="form-group">
+                      <select id="inputGender" class="form-control">
+                        <option selected>All</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="matchesList">
+                {% if button == "links"%}
+                {% include "mainApp/matches.html" %}
+                {% elif button == "searches" %}
+                {% include "mainApp/searches.html" %}
+                {% else %}
+                {% include "mainApp/likes.html" %}
+                {% endif %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+<script>
+  $( document ).ready(function() {
+
+    //when a filter choice is applied/changed, display users that match criterea.
+    $("#inputGender, #inputAge").change(function(){
+      // get filter selected by user.
+       genderList =["Male", "Female", "Other"]
+       ageList =["under-18","18-30","31-40","41-50","over-50"]
+       gender = $("#inputGender").val()
+       age = $("#inputAge").val()
+       if(age=="under 18"){
+         age="under-18"
+       }
+       if(age=="over 50"){
+         age="over-50"
+       }
+
+       // show users filtered by age.
+       if(age=="All"){
+         for(i=0; i<ageList.length;i++){
+             $("."+ageList[i]).show()
+         }
+       }else{
+         for(i=0; i<ageList.length;i++){
+           $("."+age).show()
+         }
+       }
+
+       //show users filtered by gender.
+       if(age=="All"){
+         for(i=0; i<genderList.length;i++){
+             $("."+genderList[i]).show()
+         }
+       }else{
+         for(i=0; i<genderList.length;i++){
+             $("."+gender).show()
+         }
+       }
+
+       //hide users filtered by age.
+       if(gender!="All"){
+         for(i=0; i<=genderList.length;i++){
+           if(genderList[i]!=gender){
+             $("."+genderList[i]).hide()
+           }
+         }
+       }
+
+       //hide users filtered by age.
+       if(age!="All"){
+         for(i=0; i<ageList.length;i++){
+           if(ageList[i]!=age){
+             $("."+ageList[i]).hide()
+           }
+         }
+       }
+     });
+
+     //allows user to change image when button pressed.
+    $('#edit-photo-image').on('change', function(){
+       $('#imageForm').submit();
+      });
+  });
+
+
+</script>
+{% endblock %}

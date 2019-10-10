@@ -1,0 +1,147 @@
+{% extends "mainApp/base.html" %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'mainApp/chats.css' %}">
+<div class="container main-section">
+  <button class="btn btn-info float-right" id="refresh_button" type="button">Refresh messages</button>
+  <h3 class="text-center">Your Chats</h3>
+  <div class="messaging">
+    <div class="inbox_msg">
+      <div class="inbox_people">
+        <div class="headind_srch">
+          <div class="recent_heading">
+            <h4>Your matches</h4>
+          </div>
+
+          </div>
+          <div class="inbox_chat">
+            {% for person in matchesList %}
+            {% if forloop.counter0 == 0 %}
+            <div class="chat_list active_chat first" id="{{person.username}}">
+              {% else %}
+              <div class="chat_list active_chat" id="{{person.username}}">
+                {% endif %}
+
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="/media/{{person.image}}" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>{{person.first_name}}<span class="chat_date"></span></h5>
+                    <p class="text-muted">The only way to tell if someone will like you
+                      is to chat to them!</p>
+                    </div>
+                  </div>
+                </div>
+                {% empty %}
+                <br>
+                <h5 class="text-info text-center">You can only chat to links, once you have some matched links come back to chat!</h5>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="mesgs">
+              <div class="msg_history">
+              </div>
+              {% if matchesList|length > 0 %}
+              <div class="type_msg">
+                <div class="input_msg_write">
+                  <form id="messageForm">
+                    {% csrf_token %}
+                    <input type="text" class="write_msg" placeholder="Type a message" required/>
+                    <button class="msg_send_btn" type="submit"><i class="fas fa-share-square" aria-hidden="true"></i></button>
+                  </form>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+
+
+        </div></div>
+
+
+
+        <script>
+          $( document ).ready(function(){
+            var themid;
+
+            function listMessages(response){
+              var them = response.theirUsername;
+              var me = response.username;
+              var text = "";
+              response.messageList.forEach(function(message){
+                console.log(message)
+                responseText = message.split(";");
+                message = responseText[0];
+                sender = responseText[1];
+                recipient = responseText[2];
+                datetime = responseText[3];
+                date = datetime.split(" ")[0];
+                time = datetime.split(" ")[1]
+                time = time.split(".")[0];
+                time = time.split(":")[0]+":"+time.split(":")[1]
+                senderImg = responseText[4];
+                if (me == sender){
+                  text += "<div class='outgoing_msg'><div class='outgoing_msg_img'><img src='/media/"+senderImg+"'></div><div class='sent_msg'><p>"
+                    text += message;
+                    text += "</p><span class='time_date'>"+ time + " | " + date+ "</span></div></div>"
+                  }
+                  else{
+                    text +=   "<div class='incoming_msg'><div class='incoming_msg_img'><img src='/media/"+senderImg+"'></div><div class='received_msg'><div class='received_withd_msg'><p>"
+                      text += message;
+                      text += "</p><span class='time_date'>"+time+ " | " + date + "</span></div></div></div>"
+                    }
+
+                  });
+                  themid = them
+                  $(".msg_history").html(text)
+                  $(".msg_history").scrollTop(1000000)
+                  $(".write_msg").val("")
+                }
+
+                $(".chat_list").click(function(){
+                  var them = $(this).attr("id");
+                  $(".active_chat").css('background-color', '#ebebeb');
+                  $(this).css('background-color', '#c4cec6');
+                  $.ajax({
+                    url: "/mainApp/getMessages/",
+                    type: "get",
+                    data: {"them": them},
+                    success: listMessages,
+                    error: function(response){console.log("Error", response)},
+                  });
+                })
+
+                $(".msg_send_btn").click(function(e){
+                  e.preventDefault();
+                  var them = themid;
+
+                  var message = $(".write_msg").val()
+                  if (message == ""){
+                    return;
+                  }
+                  var csrf = $('input[name=csrfmiddlewaretoken]').val()
+                  $.ajax({
+                    url: "/mainApp/addMessage/",
+                    type: "post",
+                    data: {"them": them, "message": message, "csrfmiddlewaretoken": csrf,},
+                    success: listMessages,
+                    error: function(response){console.log("Error", response)},
+                  });
+                })
+
+                $("#refresh_button").click(function(){
+                  location.reload()
+                });
+
+
+                $.ajax({
+                  url: "/mainApp/getMessages/",
+                  type: "get",
+                  data: {"them":   $(".first").attr("id")},
+                  success: listMessages,
+                  error: function(response){console.log("Error", response)},
+                });
+
+              })
+            </script>
+            {% endblock %}

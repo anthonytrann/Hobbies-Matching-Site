@@ -1,0 +1,31 @@
+{% extends "mainApp/base.html" %}
+{% block content %}
+
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4>More About {{first_name}}</h4>
+    </div>
+    <div class="modal-body">
+      <center>
+        <img src="/media/{{image}}" name="aboutme" width="140" height="140" border="0" class="img-circle">
+        <h3 class="media-heading">{{first_name}} {{last_name}}</h3>
+        <h4>Age {{age}}</h4>
+        <h4> {{gender}}</h4>
+        <hr>
+        <span><strong>Hobbies: </strong></span>
+        {% for hobby in theirHobbies %}
+        <span>{{hobby}}{% if not forloop.last %},
+          {% endif %}
+        </span>
+        {% endfor %}
+      </center>
+    </div>
+    <div class="modal-footer">
+      <center>
+        <a href="{% url 'homePageOpen' %}"><button type="button" class="btn btn-default" data-dismiss="modal">I've heard enough about {{first_name}}</button></a>
+      </center>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+<div>
+	<form class="searchesForm border">
+		{% csrf_token %}
+	{% for person in searchList %}
+	<div class="{{person.gender}} {{person.ageClass}}">
+	<div class="d-flex flex-row border rounded card-box">
+		<div class="p-0 w-20">
+			<img src="/media/{{person.image}}" class="img-thumbnail border-0 mini-image" />
+		</div>
+
+		<div class="pl-3 pt-2 pr-2 pb-2 w-50 border-left">
+			<h4 class="text-primary d-inline-block">{{person.first_name}}</h4><h5 class="text-danger d-inline-block ml-5">{{person.likesYou}}</h5>
+			<h5 class="text-info">age {{person.age}}</h5>
+			<h6 class="text-info">Hobbies in common: {{person.sameHobbiesCount}}</h6>
+
+			<ul class="list-inline">
+				<li class="list-inline-item"><span class="option-buttons"><a href="{% url 'openProfile' %}?them={{person.username}}" class="text-dark"><i class="far fa-user fa-2x"></i> View Profile</a></span></li>
+			</ul>
+		</div>
+
+		<div class="hobbies">
+				<h5 class="text-secondary">Enjoys</h5>
+		{% for hobby in hobbyList %}
+			{% if person.username in hobby%}
+				{% for personsHobby in hobby %}
+					{% if forloop.counter0 != 0 and forloop.counter0 < 5 %}
+						<span class="text-secondary">{{personsHobby}}<span>
+						<br>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		{% endfor %}
+		</div>
+      <ul class="list-group float-right ask-icon-list">
+        <li class="list-group-item text-success ask-buttons" id="{{person.username}}_like"><i class="fas fa-check fa-2x ask-icon-like"></i><span id="ask-like">Link</span></li>
+        <li class="list-group-item text-danger ask-buttons" id="{{person.username}}_reject"><i class="fas fa-times fa-2x ask-icon-reject"></i><span>Reject</span></li>
+      </ul>
+    </div>
+    </div>
+    {% endfor %}
+    </form>
+  </div>
+
+
+<script>
+	  // when the user links (likes) or rejects someone this function gets the username of the person and the action
+  $( document ).ready(function() {
+  $(".ask-buttons").click(function(){
+    $(this).html("<div class='loader'></div>")
+    var theirUsername = $(this).attr("id").split("_")[0]
+    var action = $(this).attr("id").split("_")[1]
+    var csrf = $('input[name=csrfmiddlewaretoken]').val()
+			// ajax request to post the like of reject data to the UserProfile objects (the user and their user UserProfiles)
+      $.ajax({
+        url: "/mainApp/likeOrReject/",
+        type: "post",
+        data: {"csrfmiddlewaretoken": csrf, "theirUsername": theirUsername, "action": action, "type": "searches"},
+        success: function(response){location.reload()},
+        error: function(response){console.log("Error", response)},
+      });
+    });
+  });
+</script>
